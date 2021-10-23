@@ -38,16 +38,22 @@ public class SpringController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == groundMask)
-        {
-            canBounce = true;
-            hasBounced = false;
-        }
+        canBounce = true;
+        hasBounced = false;
+        //if (collision.gameObject.layer.Equals(groundMask))
+        //{
+        //}
+    }
+
+    void OnTriggerStay2D(Collider2D collision)
+    {
+        canBounce = true;
+        //if (collision.gameObject.layer.Equals(groundMask))
     }
 
     void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == groundMask)
-            canBounce = false;
+        canBounce = false;
+        //if (collision.gameObject.layer.Equals(groundMask))
     }
 }
