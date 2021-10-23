@@ -1,0 +1,21 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class TitleController : MonoBehaviour
+{
+
+    public RectTransform settingsText;
+
+    void Start()
+    {
+        
+    }
+
+    void Update()
+    {
+        if (settingsText)
+            settingsText.Rotate(Vector3.forward * -0.25f);
+    }
+}
