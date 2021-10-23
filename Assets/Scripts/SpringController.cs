@@ -10,7 +10,7 @@ public class SpringController : MonoBehaviour
     public int mouseButton = 0;
 
     [Header("Ground Checking")]
-    public LayerMask groundMask;
+    public int bouncableLayer = 0;
 
     private Rigidbody2D parentBody;
     private bool canBounce;
@@ -38,12 +38,18 @@ public class SpringController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
+        if (!collision.gameObject.layer.Equals(bouncableLayer))
+            return;
+
         canBounce = true;
         hasBounced = false;
     }
 
     void OnTriggerStay2D(Collider2D collision)
     {
+        if (!collision.gameObject.layer.Equals(bouncableLayer))
+            return;
+
         canBounce = true;
     }
 

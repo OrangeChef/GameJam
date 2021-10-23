@@ -6,9 +6,32 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
 
+    #region Singleton
+    public static GameManager Instance;
+
+    void Awake()
+    {
+        if (Instance && Instance != this)
+        {
+            Destroy(this);
+            return;
+        }
+
+        Instance = this;
+    }
+    #endregion
+
+    public static int checkpoint;
+    public Transform[] checkpointTransforms;
+
     [Header("Action on Key Press")]
     public ToggleMenuOnKeyPress[] menuMappings;
     public LoadSceneOnKeyPress[] sceneMappings;
+
+    private void Start()
+    {
+        PutPlayerAtCheckpoint(checkpoint);
+    }
 
     void Update()
     {
@@ -39,6 +62,7 @@ public class GameManager : MonoBehaviour
     public void LoadScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
+        GameObject.FindWithTag("Player").transform.position = checkpointTransforms[checkpoint].position;
     }
 
     public void UnloadScene(string sceneName)
@@ -56,6 +80,16 @@ public class GameManager : MonoBehaviour
         }
 #endif
         Application.Quit(exitCode);
+    }
+
+    public void SetCheckpoint(int cp)
+    {
+        checkpoint = cp;
+    }
+
+    public void PutPlayerAtCheckpoint(int cp)
+    {
+        GameObject.FindWithTag("Player").transform.position = checkpointTransforms[cp].position;
     }
 }
 
