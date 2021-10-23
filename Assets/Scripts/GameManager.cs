@@ -28,9 +28,10 @@ public class GameManager : MonoBehaviour
     public ToggleMenuOnKeyPress[] menuMappings;
     public LoadSceneOnKeyPress[] sceneMappings;
 
-    private void Start()
+    void Start()
     {
-        PutPlayerAtCheckpoint();
+        if (SceneManager.GetActiveScene().name != "TitleMenu")
+            PutPlayerAtCheckpoint();
     }
 
     void Update()
@@ -62,7 +63,9 @@ public class GameManager : MonoBehaviour
     public void LoadScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
-        GameObject.FindWithTag("Player").transform.position = checkpointTransforms[checkpoint].position;
+
+        if (SceneManager.GetActiveScene().name != "TitleMenu")
+            GameObject.FindWithTag("Player").transform.position = checkpointTransforms[checkpoint].position;
     }
 
     public void UnloadScene(string sceneName)

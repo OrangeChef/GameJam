@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,7 @@ public class PlayerFaceCursor : MonoBehaviour
     {
         mainCam = Camera.main;
         TryGetComponent(out body);
+        GetAim();
     }
 
     void Update()
@@ -32,5 +34,10 @@ public class PlayerFaceCursor : MonoBehaviour
         body.rotation = angle * (invertAim ? -1f : 1f);
 
         return angle;
+    }
+
+    public void GetAim()
+    {
+        invertAim = Convert.ToBoolean(PlayerPrefs.GetInt("InvertAim"));
     }
 }
