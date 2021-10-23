@@ -1,0 +1,32 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class SpringController : MonoBehaviour
+{
+
+    public int mouseButton = 0;
+    public LayerMask groundMask;
+
+    private bool canBounce;
+
+    void Update()
+    {
+        if (Input.GetMouseButton(mouseButton) && canBounce)
+        {
+
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == groundMask)
+            canBounce = true;
+    }
+
+    void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == groundMask)
+            canBounce = false;
+    }
+}

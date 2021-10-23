@@ -6,20 +6,9 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
 
-    [Header("Bouncing")]
-    public int mouseButton = 0;
-    public float bounceForce = 8f;
-
-    [Header("Surface Checking")]
-    public float surfaceCheckRadius = 0.5f;
-    public LayerMask groundMask;
-
     private Rigidbody2D body;
-    private bool wantsToBounce;
     private Vector2 directionToMouse;
     private Camera mainCam;
-    private bool surfaceHit;
-    private bool hasBounced;
 
     void Start()
     {
@@ -29,24 +18,8 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        surfaceHit = Physics2D.OverlapCircle(transform.position, surfaceCheckRadius, groundMask);
-
-        if (surfaceHit && hasBounced)
-            hasBounced = false;
-
-        wantsToBounce = Input.GetMouseButton(mouseButton);
-
         directionToMouse = transform.position - mainCam.ScreenToWorldPoint(Input.mousePosition + Vector3.forward * 10f);
         float angle = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg + 90f;
         body.rotation = angle;
-    }
-
-    void FixedUpdate()
-    {
-        if (wantsToBounce && surfaceHit && !hasBounced)
-        {
-            body.velocity = directionToMouse.normalized * bounceForce;
-            hasBounced = true;
-        }
     }
 }
