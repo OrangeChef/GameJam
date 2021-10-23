@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        PutPlayerAtCheckpoint(checkpoint);
+        PutPlayerAtCheckpoint();
     }
 
     void Update()
@@ -87,9 +87,9 @@ public class GameManager : MonoBehaviour
         checkpoint = cp;
     }
 
-    public void PutPlayerAtCheckpoint(int cp)
+    public void PutPlayerAtCheckpoint()
     {
-        GameObject.FindWithTag("Player").transform.position = checkpointTransforms[cp].position;
+        GameObject.FindWithTag("Player").transform.position = checkpointTransforms[checkpoint].position;
     }
 }
 
