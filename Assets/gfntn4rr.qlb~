@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     public float bounceForce = 8f;
 
     [Header("Surface Checking")]
-    public float surfaceCheckRadius = 0.5f;
+    public float surfaceCheckRadius = 0.85f;
     public LayerMask groundMask;
 
     private Rigidbody2D body;
@@ -19,7 +19,6 @@ public class PlayerController : MonoBehaviour
     private Vector2 directionToMouse;
     private Camera mainCam;
     private bool surfaceHit;
-    private bool hasBounced;
 
     void Start()
     {
@@ -30,10 +29,6 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         surfaceHit = Physics2D.OverlapCircle(transform.position, surfaceCheckRadius, groundMask);
-
-        if (surfaceHit && hasBounced)
-            hasBounced = false;
-
         wantsToBounce = Input.GetMouseButton(mouseButton);
 
         directionToMouse = transform.position - mainCam.ScreenToWorldPoint(Input.mousePosition + Vector3.forward * 10f);
@@ -43,10 +38,7 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (wantsToBounce && surfaceHit && !hasBounced)
-        {
+        if (wantsToBounce && surfaceHit)
             body.velocity = directionToMouse.normalized * bounceForce;
-            hasBounced = true;
-        }
     }
 }
