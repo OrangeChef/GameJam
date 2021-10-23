@@ -24,7 +24,8 @@ public class MenuManager : MonoBehaviour
 
     void Start()
     {
-        allMenus = FindObjectsOfType<Menu>();
+        if (allMenus.Length == 0)
+            allMenus = FindObjectsOfType<Menu>();
     }
 
     public void OpenMenu(Menu menu)
