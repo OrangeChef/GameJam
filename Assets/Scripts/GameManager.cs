@@ -48,12 +48,13 @@ public class GameManager : MonoBehaviour
 
     public void QuitGame(int exitCode)
     {
-        if (UnityEditor.EditorApplication.isPlaying)
+#if UNITY_EDITOR
+        if (Application.isEditor)
         {
             UnityEditor.EditorApplication.isPlaying = false;
             return;
         }
-
+#endif
         Application.Quit(exitCode);
     }
 }
