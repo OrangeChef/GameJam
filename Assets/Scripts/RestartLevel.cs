@@ -6,6 +6,7 @@ public class RestartLevel : MonoBehaviour
 {
 
     public string sceneName;
+    public float delay = 0.5f;
 
     private Transform player;
 
@@ -17,6 +18,12 @@ public class RestartLevel : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.transform.Equals(player))
-            GameManager.Instance.LoadScene(sceneName);
+            StartCoroutine(ReloadScene());
+    }
+
+    IEnumerator ReloadScene()
+    {
+        yield return new WaitForSeconds(delay);
+        GameManager.Instance.LoadScene(sceneName);
     }
 }
