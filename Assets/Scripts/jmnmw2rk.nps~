@@ -8,22 +8,7 @@ using UnityEngine;
 public class PlayerFaceCursor : MonoBehaviour
 {
 
-    #region Singleton
-    public static PlayerFaceCursor Instance;
-
-    void Awake()
-    {
-        if (Instance && Instance != this)
-        {
-            Destroy(this);
-            return;
-        }
-
-        Instance = this;
-    }
-    #endregion
-
-    public bool invertAim = false;
+    public static bool invertAim = false;
 
     private Rigidbody2D body;
     private Vector2 directionToMouse;
@@ -33,7 +18,7 @@ public class PlayerFaceCursor : MonoBehaviour
     {
         mainCam = Camera.main;
         TryGetComponent(out body);
-        LoadGameData();
+        GetAim();
     }
 
     void Update()
@@ -43,7 +28,7 @@ public class PlayerFaceCursor : MonoBehaviour
 
     float GetAngle()
     {
-        float angle;
+        float angle = 0f;
 
         directionToMouse = transform.position - mainCam.ScreenToWorldPoint(Input.mousePosition + Vector3.forward * 10f);
         angle = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg + (invertAim ? -90f : 90f);
@@ -52,17 +37,11 @@ public class PlayerFaceCursor : MonoBehaviour
         return angle;
     }
 
-    public void LoadGameData()
+    public void LoadFromSave()
     {
-        string[] saveData = File.ReadAllLines($"{Application.persistentDataPath}/BOING.txt");
+        string[] saveData = File.ReadAllLines($"{Application.persistentDataPath}/BOING");
         body.position = new Vector2(float.Parse(saveData[0]), float.Parse(saveData[1]));
         body.velocity = new Vector2(float.Parse(saveData[2]), float.Parse(saveData[3]));
-        invertAim = saveData[4] == "1";
-    }
-
-    public void LoadAimOnly()
-    {
-        string[] saveData = File.ReadAllLines($"{Application.persistentDataPath}/BOING.txt");
-        invertAim = saveData[4] == "1";
+        invertAim = Convert.ToBoolean(int.Parse(saveData[4]));
     }
 }

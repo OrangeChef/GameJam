@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,7 +24,6 @@ public class MenuManager : MonoBehaviour
     #endregion
 
     public float resetBounceDelay = 0.1f;
-    public Toggle invertAimToggle;
 
     [Space]
     public Menu[] allMenus;
@@ -32,9 +32,6 @@ public class MenuManager : MonoBehaviour
     {
         if (allMenus.Length == 0)
             allMenus = FindObjectsOfType<Menu>();
-
-        if (PlayerPrefs.HasKey("InvertAim") && invertAimToggle)
-            invertAimToggle.isOn = Convert.ToBoolean(PlayerPrefs.GetInt("InvertAim"));
     }
 
     public void OpenMenu(Menu menu)
@@ -55,11 +52,5 @@ public class MenuManager : MonoBehaviour
 
         if (menu.isMenuOpen)
             menu.Close();
-    }
-
-    public void SetPlayerAim()
-    {
-        if (invertAimToggle)
-            PlayerPrefs.SetInt("InvertAim", Convert.ToInt32(invertAimToggle.isOn));
     }
 }

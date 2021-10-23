@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,18 +24,9 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
-    public static int checkpoint;
-    public Transform[] checkpointTransforms;
-
     [Header("Action on Key Press")]
     public ToggleMenuOnKeyPress[] menuMappings;
     public LoadSceneOnKeyPress[] sceneMappings;
-
-    void Start()
-    {
-        if (SceneManager.GetActiveScene().name != "TitleMenu")
-            PutPlayerAtCheckpoint();
-    }
 
     void Update()
     {
@@ -63,9 +57,6 @@ public class GameManager : MonoBehaviour
     public void LoadScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
-
-        if (SceneManager.GetActiveScene().name != "TitleMenu")
-            GameObject.FindWithTag("Player").transform.position = checkpointTransforms[checkpoint].position;
     }
 
     public void UnloadScene(string sceneName)
@@ -73,8 +64,17 @@ public class GameManager : MonoBehaviour
         SceneManager.UnloadSceneAsync(sceneName);
     }
 
+    public void SetPlayerAim(Toggle aimToggle)
+    {
+        SavePlayer.Instance.SaveAimOnly(aimToggle.isOn);
+
+        if (PlayerFaceCursor.Instance)
+            PlayerFaceCursor.Instance.LoadAimOnly();
+    }
+
     public void QuitGame(int exitCode)
     {
+        StartCoroutine(SavePlayer.Instance.Save(false));
 #if UNITY_EDITOR
         if (Application.isEditor)
         {
@@ -83,16 +83,6 @@ public class GameManager : MonoBehaviour
         }
 #endif
         Application.Quit(exitCode);
-    }
-
-    public void SetCheckpoint(int cp)
-    {
-        checkpoint = cp;
-    }
-
-    public void PutPlayerAtCheckpoint()
-    {
-        GameObject.FindWithTag("Player").transform.position = checkpointTransforms[checkpoint].position;
     }
 }
 

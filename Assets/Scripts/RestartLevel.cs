@@ -23,6 +23,7 @@ public class RestartLevel : MonoBehaviour
 
     IEnumerator ReloadScene()
     {
+        StartCoroutine(SavePlayer.Instance.Save(true));
         yield return new WaitForSeconds(delay);
         GameManager.Instance.LoadScene(sceneName);
     }
