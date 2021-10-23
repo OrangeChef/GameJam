@@ -20,6 +20,9 @@ public class MenuManager : MonoBehaviour
     }
     #endregion
 
+    public float resetBounceDelay = 0.1f;
+
+    [Space]
     public Menu[] allMenus;
 
     void Start()
@@ -41,6 +44,9 @@ public class MenuManager : MonoBehaviour
 
     public void CloseMenu(Menu menu)
     {
+        if (menu.menuName == "Pause")
+            StartCoroutine(FindObjectOfType<SpringController>().ResetBounceAbility(resetBounceDelay));
+
         if (menu.isMenuOpen)
             menu.Close();
     }

@@ -40,20 +40,21 @@ public class SpringController : MonoBehaviour
     {
         canBounce = true;
         hasBounced = false;
-        //if (collision.gameObject.layer.Equals(groundMask))
-        //{
-        //}
     }
 
     void OnTriggerStay2D(Collider2D collision)
     {
         canBounce = true;
-        //if (collision.gameObject.layer.Equals(groundMask))
     }
 
     void OnTriggerExit2D(Collider2D collision)
     {
         canBounce = false;
-        //if (collision.gameObject.layer.Equals(groundMask))
+    }
+
+    public IEnumerator ResetBounceAbility(float delay)
+    {
+        canBounce = false;
+        yield return new WaitForSeconds(delay);
     }
 }

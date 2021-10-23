@@ -132,8 +132,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4145262}
-  - component: {fileID: 4145264}
   - component: {fileID: 4145263}
+  - component: {fileID: 4145264}
   m_Layer: 5
   m_Name: Pause Menu
   m_TagString: Untagged
@@ -188,6 +188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 468647c9ee0e6a7418bebb204743691c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resetBounceDelay: 0.1
 --- !u!1 &14507712
 GameObject:
   m_ObjectHideFlags: 0
