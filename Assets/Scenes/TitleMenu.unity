@@ -560,7 +560,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 708628688}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: SetPlayerAim
+        m_MethodName: SetInvertAim
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 444802065}
@@ -867,6 +867,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a93f21f1cb247b44dadad0bf43a89193, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  invertAimToggle: {fileID: 444802065}
   menuMappings: []
   sceneMappings: []
 --- !u!4 &708628689
@@ -1670,7 +1671,6 @@ GameObject:
   - component: {fileID: 1880789178}
   - component: {fileID: 1880789177}
   - component: {fileID: 1880789181}
-  - component: {fileID: 1880789182}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1775,20 +1775,6 @@ MonoBehaviour:
   resetBounceDelay: 0.1
   allMenus:
   - {fileID: 2017831476}
---- !u!114 &1880789182
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1880789176}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 251931dd6b327bb4a8c12f30a312ffc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  invertAim: 0
-  startPosition: {fileID: 0}
 --- !u!1 &2017831474
 GameObject:
   m_ObjectHideFlags: 0

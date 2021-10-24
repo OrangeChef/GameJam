@@ -24,9 +24,17 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
+    public Toggle invertAimToggle;
+
     [Header("Action on Key Press")]
     public ToggleMenuOnKeyPress[] menuMappings;
     public LoadSceneOnKeyPress[] sceneMappings;
+
+    void Start()
+    {
+        if (PlayerPrefs.HasKey("InvertAim"))
+            SetAimToggle();
+    }
 
     void Update()
     {
@@ -56,6 +64,9 @@ public class GameManager : MonoBehaviour
 
     public void LoadScene(string sceneName)
     {
+        if (sceneName == "TitleMenu")
+            PlayerManager.Instance.SaveAll(false);
+
         SceneManager.LoadScene(sceneName);
     }
 
@@ -64,17 +75,23 @@ public class GameManager : MonoBehaviour
         SceneManager.UnloadSceneAsync(sceneName);
     }
 
-    public void SetPlayerAim(Toggle aimToggle)
+    public void SetAimToggle()
     {
-        SavePlayer.Instance.SaveAimOnly(aimToggle.isOn);
+        invertAimToggle.isOn = PlayerPrefs.GetInt("InvertAim") == 1;
+    }
 
-        if (PlayerFaceCursor.Instance)
-            PlayerFaceCursor.Instance.LoadAimOnly();
+    public void SetInvertAim(Toggle toggle)
+    {
+        PlayerPrefs.SetInt("InvertAim", toggle.isOn ? 1 : 0);
+
+        if (PlayerManager.Instance)
+            PlayerManager.Instance.SetInvertAim(toggle);
     }
 
     public void QuitGame(int exitCode)
     {
-        StartCoroutine(SavePlayer.Instance.Save(false));
+        PlayerManager.Instance.SaveAll(false);
+
 #if UNITY_EDITOR
         if (Application.isEditor)
         {

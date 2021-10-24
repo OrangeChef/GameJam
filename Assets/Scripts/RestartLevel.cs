@@ -15,7 +15,7 @@ public class RestartLevel : MonoBehaviour
         player = GameObject.FindWithTag("Player").transform;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.transform.Equals(player))
             StartCoroutine(ReloadScene());
@@ -23,8 +23,9 @@ public class RestartLevel : MonoBehaviour
 
     IEnumerator ReloadScene()
     {
-        StartCoroutine(SavePlayer.Instance.Save(true));
         yield return new WaitForSeconds(delay);
+
+        PlayerManager.Instance.SaveAll(true);
         GameManager.Instance.LoadScene(sceneName);
     }
 }
