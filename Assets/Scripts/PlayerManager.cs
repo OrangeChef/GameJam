@@ -42,9 +42,19 @@ public class PlayerManager : MonoBehaviour
 
         if (PlayerPrefs.HasKey("XPos") && PlayerPrefs.HasKey("YPos"))
             LoadPosition();
+        else
+        {
+            SavePosition(true);
+            LoadPosition();
+        }
 
         if (PlayerPrefs.HasKey("XVel") && PlayerPrefs.HasKey("YVel"))
             LoadVelocity();
+        else
+        {
+            SaveVelocity(true);
+            LoadVelocity();
+        }
 
         StartCoroutine(SavePlayer());
     }
