@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerManager : MonoBehaviour
@@ -26,6 +27,9 @@ public class PlayerManager : MonoBehaviour
 
     public bool invertAim = false;
     public Transform startPosition;
+
+    [Header("Face")]
+    public float impactSpeedForHurtFace = 10f;
 
     [Header("Saving")]
     public float saveInterval = 1f;
@@ -131,5 +135,11 @@ public class PlayerManager : MonoBehaviour
             SaveAll(false);
             yield return new WaitForSeconds(saveInterval);
         }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (body.velocity.magnitude >= impactSpeedForHurtFace)
+            StartCoroutine(GetComponentInChildren<Smiley>().SetFace("=(", "=)", 1.5f));
     }
 }

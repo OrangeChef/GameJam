@@ -20,7 +20,7 @@ public class RestartLevel : MonoBehaviour
 
         yield return new WaitForSeconds(delay);
 
-        PlayerManager.Instance.SaveAll(true);
+        PlayerPrefs.DeleteAll();
         GameManager.Instance.LoadScene(sceneName);
     }
 }

@@ -26,9 +26,11 @@ public class GameManager : MonoBehaviour
 
     public Toggle invertAimToggle;
 
-    [Header("Action on Key Press")]
+    [Header("Toggle menu on Key Press")]
     public ToggleMenuOnKeyPress[] menuMappings;
-    public LoadSceneOnKeyPress[] sceneMappings;
+
+    [Space]
+    public string restartButton = "Restart";
 
     void Start()
     {
@@ -52,13 +54,10 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (sceneMappings.Length > 0)
+        if (Input.GetButtonDown(restartButton))
         {
-            foreach (LoadSceneOnKeyPress lsokp in sceneMappings)
-            {
-                if (Input.GetKeyDown(lsokp.keyToLoad))
-                    LoadScene(lsokp.sceneName);
-            }
+            PlayerPrefs.DeleteAll();
+            LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 
@@ -108,11 +107,4 @@ public class ToggleMenuOnKeyPress
 {
     public Menu menu;
     public KeyCode key;
-}
-
-[System.Serializable]
-public class LoadSceneOnKeyPress
-{
-    public string sceneName;
-    public KeyCode keyToLoad;
 }
