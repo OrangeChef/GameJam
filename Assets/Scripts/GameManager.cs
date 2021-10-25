@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     [Space]
     public string gameSceneName = "Game";
     public string restartButton = "Restart";
+    public Menu restartMenu;
 
     void Start()
     {
@@ -56,15 +57,18 @@ public class GameManager : MonoBehaviour
         }
 
         if (Input.GetButtonDown(restartButton) && SceneManager.GetActiveScene().name == gameSceneName)
-        {
-            ClearPlayerPrefs();
-            LoadScene(SceneManager.GetActiveScene().name);
-        }
+            MenuManager.Instance.OpenMenu(restartMenu);
     }
 
     public void ClearPlayerPrefs()
     {
         PlayerPrefs.DeleteAll();
+    }
+
+    public void Restart()
+    {
+        ClearPlayerPrefs();
+        LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void LoadScene(string sceneName)
