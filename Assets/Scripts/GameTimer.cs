@@ -32,6 +32,8 @@ public class GameTimer : MonoBehaviour
 
         if (PlayerPrefs.HasKey("Time"))
             currentTime = PlayerPrefs.GetFloat("Time");
+        else
+            PlayerPrefs.SetFloat("Time", 9999f);
 
         timerActive = true;
     }
@@ -50,7 +52,7 @@ public class GameTimer : MonoBehaviour
             if (minutes == 60)
                 minutes = 0;
 
-            currentTimer.text = string.Format("{0:00}:{1:00}:{2:00}:{3:00}", hours, minutes, seconds, centiseconds);
+            currentTimer.text = string.Format("{0:00}:{1:00}:{2:00}.{3:00}", hours, minutes, seconds, centiseconds);
         }
     }
 

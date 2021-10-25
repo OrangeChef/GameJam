@@ -22,12 +22,7 @@ public class GameFinish : MonoBehaviour
             PlayerManager.Instance.enabled = false;
 
             GameTimer.Instance.SetTimerActivity(false);
-
-            if (!PlayerPrefs.HasKey("Record"))
-                PlayerPrefs.SetFloat("Record", 999999f);
-
-            if (GameTimer.Instance.currentTime < PlayerPrefs.GetFloat("Record"))
-                PlayerPrefs.SetFloat("Record", GameTimer.Instance.currentTime);
+            PlayerPrefs.SetFloat("Time", GameTimer.Instance.currentTime);
 
             player.LeanMove(transform.position, movePlayerSpeed).setEase(easeType).setOnComplete(() => StartCoroutine(WaitAndLoad()));
         }
