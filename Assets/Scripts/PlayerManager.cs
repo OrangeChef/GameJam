@@ -27,7 +27,12 @@ public class PlayerManager : MonoBehaviour
     #endregion
 
     public bool invertAim = false;
+
+    [Header("Start")]
     public Transform startPosition;
+    public Vector3 targetScale;
+    public float scaleTime = 1f;
+    public LeanTweenType scaleType;
 
     [Header("Face")]
     public float impactSpeedForHurtFace = 10f;
@@ -62,6 +67,15 @@ public class PlayerManager : MonoBehaviour
         }
 
         StartCoroutine(SavePlayer());
+        Initialize();
+    }
+
+    void Initialize()
+    {
+        transform.localScale = Vector3.zero;
+        GameTimer.Instance.SetTimerActivity(false);
+        body.constraints = RigidbodyConstraints2D.FreezeAll;
+        transform.LeanScale(targetScale, scaleTime).setEase(scaleType).setOnComplete(ActivateStuff);
     }
 
     void Update()
@@ -131,6 +145,11 @@ public class PlayerManager : MonoBehaviour
         body.velocity = new Vector2(PlayerPrefs.GetFloat("XVel"), PlayerPrefs.GetFloat("YVel"));
     }
 
+    public void ActivateStuff()
+    {
+        body.constraints = RigidbodyConstraints2D.None;
+        GameTimer.Instance.SetTimerActivity(true);
+    }
 
     public void LoadTime()
     {
