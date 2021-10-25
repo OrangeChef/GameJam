@@ -237,7 +237,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneName: Game
-  delay: 0.5
+  delay: 1
+  splash: {fileID: 8300000, guid: f72a218dfd4897441b641c47857aa15a, type: 3}
 --- !u!60 &6718906
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -3138,7 +3139,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneName: Game
-  delay: 0.5
+  delay: 1
+  splash: {fileID: 8300000, guid: f72a218dfd4897441b641c47857aa15a, type: 3}
 --- !u!60 &178413235
 PolygonCollider2D:
   m_ObjectHideFlags: 0
