@@ -13,6 +13,9 @@ public class SpringController : MonoBehaviour
     public Color offColor;
     public Color onColor = Color.white;
 
+    [Space]
+    public AudioClip[] bounceSounds;
+
     [Header("Ground Checking")]
     public int bouncableLayer = 0;
 
@@ -39,6 +42,10 @@ public class SpringController : MonoBehaviour
 
         if (Input.GetMouseButton(mouseButton) && canBounce && !hasBounced)
         {
+            int sound = Random.Range(0, bounceSounds.Length);
+            gameObject.AddComponent<AudioSource>().PlayOneShot(bounceSounds[sound]);
+            Destroy(GetComponent<AudioSource>(), 2f);
+
             parentBody.velocity = transform.up * bounceForce;
             hasBounced = true;
         }
