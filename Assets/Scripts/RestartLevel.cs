@@ -16,11 +16,9 @@ public class RestartLevel : MonoBehaviour
 
     public IEnumerator ReloadScene()
     {
-        FindObjectOfType<SpringController>().enabled = false;
-
         yield return new WaitForSeconds(delay);
 
-        PlayerPrefs.DeleteAll();
+        GameManager.Instance.ClearPlayerPrefs();
         GameManager.Instance.LoadScene(sceneName);
     }
 }

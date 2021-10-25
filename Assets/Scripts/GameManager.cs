@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
     public ToggleMenuOnKeyPress[] menuMappings;
 
     [Space]
+    public string gameSceneName = "Game";
     public string restartButton = "Restart";
 
     void Start()
@@ -54,17 +55,24 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (Input.GetButtonDown(restartButton))
+        if (Input.GetButtonDown(restartButton) && SceneManager.GetActiveScene().name == gameSceneName)
         {
-            PlayerPrefs.DeleteAll();
+            ClearPlayerPrefs();
             LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 
+    public void ClearPlayerPrefs()
+    {
+        PlayerPrefs.DeleteAll();
+    }
+
     public void LoadScene(string sceneName)
     {
-        if (sceneName == "TitleMenu")
+        if (sceneName == "TitleMenu" && PlayerManager.Instance)
             PlayerManager.Instance.SaveAll(false);
+        else if (sceneName == gameSceneName && SceneManager.GetActiveScene().name == "FinishMenu")
+            ClearPlayerPrefs();
 
         SceneManager.LoadScene(sceneName);
     }
@@ -89,7 +97,8 @@ public class GameManager : MonoBehaviour
 
     public void QuitGame(int exitCode)
     {
-        PlayerManager.Instance.SaveAll(false);
+        if (PlayerManager.Instance)
+            PlayerManager.Instance.SaveAll(false);
 
 #if UNITY_EDITOR
         if (Application.isEditor)

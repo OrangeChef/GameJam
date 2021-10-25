@@ -9,16 +9,22 @@ public class SpringController : MonoBehaviour
     public float bounceForce = 8f;
     public int mouseButton = 0;
 
+    [Space]
+    public Color offColor;
+    public Color onColor = Color.white;
+
     [Header("Ground Checking")]
     public int bouncableLayer = 0;
 
     private Rigidbody2D parentBody;
+    private SpriteRenderer sprite;
     private bool canBounce;
     private bool hasBounced;
 
     void Start()
     {
         parentBody = GetComponentInParent<Rigidbody2D>();
+        sprite = GetComponent<SpriteRenderer>();
 
         if (parentBody == null)
         {
@@ -29,6 +35,8 @@ public class SpringController : MonoBehaviour
 
     void Update()
     {
+        sprite.color = Input.GetMouseButton(mouseButton) ? onColor : offColor;
+
         if (Input.GetMouseButton(mouseButton) && canBounce && !hasBounced)
         {
             parentBody.velocity = transform.up * bounceForce;

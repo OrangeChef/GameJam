@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -112,6 +113,14 @@ public class PlayerManager : MonoBehaviour
         PlayerPrefs.SetFloat("YVel", startPos ? 0f : body.velocity.y);
     }
 
+    public void SaveTime(bool startPos)
+    {
+        if (startPos)
+            GameTimer.Instance.currentTime = 0f;
+
+        PlayerPrefs.SetFloat("Time", GameTimer.Instance.currentTime);
+    }
+
     public void LoadPosition()
     {
         body.position = new Vector2(PlayerPrefs.GetFloat("XPos"), PlayerPrefs.GetFloat("YPos"));
@@ -122,15 +131,23 @@ public class PlayerManager : MonoBehaviour
         body.velocity = new Vector2(PlayerPrefs.GetFloat("XVel"), PlayerPrefs.GetFloat("YVel"));
     }
 
+
+    public void LoadTime()
+    {
+        if (PlayerPrefs.HasKey("Time"))
+            GameTimer.Instance.currentTime = PlayerPrefs.GetFloat("Time");
+    }
+
     public void SaveAll(bool startPos)
     {
         SavePosition(startPos);
         SaveVelocity(startPos);
+        SaveTime(startPos);
     }
 
     public IEnumerator SavePlayer()
     {
-        while(true)
+        while (true)
         {
             SaveAll(false);
             yield return new WaitForSeconds(saveInterval);
