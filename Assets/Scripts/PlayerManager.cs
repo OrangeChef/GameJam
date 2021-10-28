@@ -41,6 +41,7 @@ public class PlayerManager : MonoBehaviour
     public float saveInterval = 1f;
 
     private Rigidbody2D body;
+    private ParticleSystem[] particles;
     private Vector2 directionToMouse;
     private Camera mainCam;
 
@@ -49,6 +50,8 @@ public class PlayerManager : MonoBehaviour
         mainCam = Camera.main;
         TryGetComponent(out body);
         GetInvertAim();
+
+        particles = FindObjectsOfType<ParticleSystem>();
 
         if (PlayerPrefs.HasKey("XPos") && PlayerPrefs.HasKey("YPos"))
             LoadPosition();
@@ -65,6 +68,9 @@ public class PlayerManager : MonoBehaviour
             SaveVelocity(true);
             LoadVelocity();
         }
+
+        if (PlayerPrefs.HasKey("Particles"))
+            GetParticles();
 
         StartCoroutine(SavePlayer());
         Initialize();
@@ -162,6 +168,20 @@ public class PlayerManager : MonoBehaviour
         SavePosition(startPos);
         SaveVelocity(startPos);
         SaveTime(startPos);
+    }
+
+    public void GetParticles()
+    {
+        for (int i = 0; i < particles.Length; i++)
+        {
+            particles[i].gameObject.SetActive(PlayerPrefs.GetInt("Particles") == 1);
+        }
+    }
+
+    public void SetParticles(Toggle t)
+    {
+        PlayerPrefs.SetInt("Particles", t.isOn ? 1 : 0);
+        GetParticles();
     }
 
     public IEnumerator SavePlayer()

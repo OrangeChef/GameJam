@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class SpringController : MonoBehaviour
 {
@@ -12,16 +13,22 @@ public class SpringController : MonoBehaviour
     [Space]
     public Color offColor;
     public Color onColor = Color.white;
-    public GameObject particles;
+
+    [Space]
+    public ParticleSystem bounceParticles;
 
     [Space]
     public AudioClip[] bounceSounds;
+
+    [Space]
+    public UnityEvent[] bounceEvents;
 
     [Header("Ground Checking")]
     public int bouncableLayer = 0;
 
     private Rigidbody2D parentBody;
     private SpriteRenderer sprite;
+    private AudioSource source;
     private bool canBounce;
     private bool hasBounced;
 
@@ -29,6 +36,7 @@ public class SpringController : MonoBehaviour
     {
         parentBody = GetComponentInParent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
+        source = GetComponent<AudioSource>();
 
         if (parentBody == null)
         {
@@ -44,12 +52,14 @@ public class SpringController : MonoBehaviour
         if (Input.GetMouseButton(mouseButton) && canBounce && !hasBounced)
         {
             int sound = Random.Range(0, bounceSounds.Length);
+            source.PlayOneShot(bounceSounds[sound]);
 
-            gameObject.AddComponent<AudioSource>().PlayOneShot(bounceSounds[sound]);
-            Destroy(GetComponent<AudioSource>(), 2f);
+            bounceParticles.Play();
 
-            GameObject p = Instantiate(particles, transform.position, Quaternion.Euler(transform.up), null);
-            Destroy(p, 2);
+            for (int i = 0; i < bounceEvents.Length; i++)
+            {
+                bounceEvents[i].Invoke();
+            }
 
             parentBody.velocity = transform.up * bounceForce;
             hasBounced = true;

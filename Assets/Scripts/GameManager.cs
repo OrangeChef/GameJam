@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -35,10 +36,19 @@ public class GameManager : MonoBehaviour
     public string restartButton = "Restart";
     public Menu restartMenu;
 
+    [Header("Audio Sources")]
+    public TMP_Text volumeText;
+    public AudioSource[] allSources;
+
     void Start()
     {
         if (PlayerPrefs.HasKey("InvertAim"))
             SetAimToggle();
+
+        if (PlayerPrefs.HasKey("Volume") && allSources.Length > 0 && volumeText)
+            GetVolume();
+
+        allSources = FindObjectsOfType<AudioSource>();
     }
 
     void Update()
@@ -95,6 +105,27 @@ public class GameManager : MonoBehaviour
 
         if (PlayerManager.Instance)
             PlayerManager.Instance.SetInvertAim(toggle);
+    }
+
+    public void GetVolume()
+    {
+        for (int i = 0; i < allSources.Length; i++)
+        {
+            allSources[i].volume = PlayerPrefs.GetFloat("Volume");
+        }
+
+        volumeText.text = $"Volume: {PlayerPrefs.GetFloat("Volume"):0.00}";
+    }
+
+    public void SetVolume(Slider s)
+    {
+        for (int i = 0; i < allSources.Length; i++)
+        {
+            allSources[i].volume = s.value;
+        }
+        
+        volumeText.text = $"Volume: {s.value:0.00}";
+        PlayerPrefs.SetFloat("Volume", s.value);
     }
 
     public void QuitGame(int exitCode)

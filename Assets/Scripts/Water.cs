@@ -7,14 +7,19 @@ public class Water : MonoBehaviour
 
     public string sceneName;
     public float delay = 0.5f;
+
+    [Space]
     public AudioClip splash;
+    public ParticleSystem splashParticles;
+
+    private AudioSource source => GetComponent<AudioSource>();
 
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.transform.CompareTag("Player"))
         {
-            gameObject.AddComponent<AudioSource>().PlayOneShot(splash);
-            Destroy(GetComponent<AudioSource>(), 2f);
+            source.PlayOneShot(splash);
+            splashParticles.Play();
 
             StartCoroutine(Smiley.Instance.SetFace("=(", "=(", 5f));
             StartCoroutine(ReloadScene());
