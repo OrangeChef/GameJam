@@ -27,6 +27,10 @@ public class PlayerManager : MonoBehaviour
     #endregion
 
     public bool invertAim = false;
+    public Toggle invertToggle;
+
+    [Header("Particles")]
+    public Toggle particlesToggle;
 
     [Header("Start")]
     public Transform startPosition;
@@ -49,7 +53,9 @@ public class PlayerManager : MonoBehaviour
     {
         mainCam = Camera.main;
         TryGetComponent(out body);
-        GetInvertAim();
+
+        if (invertToggle)
+            GetInvertAim();
 
         particles = FindObjectsOfType<ParticleSystem>();
 
@@ -107,6 +113,8 @@ public class PlayerManager : MonoBehaviour
 
     public void GetInvertAim()
     {
+        invertToggle.isOn = PlayerPrefs.GetInt("InvertAim") == 1;
+
         if (PlayerPrefs.HasKey("InvertAim"))
             invertAim = PlayerPrefs.GetInt("InvertAim") == 1;
     }
@@ -176,6 +184,8 @@ public class PlayerManager : MonoBehaviour
         {
             particles[i].gameObject.SetActive(PlayerPrefs.GetInt("Particles") == 1);
         }
+
+        particlesToggle.isOn = PlayerPrefs.GetInt("Particles") == 1;
     }
 
     public void SetParticles(Toggle t)

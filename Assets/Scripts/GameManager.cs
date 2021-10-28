@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     #endregion
 
     public Toggle invertAimToggle;
+    public Toggle particlesToggle;
 
     [Header("Pausing")]
     public string pauseKey = "Pause";
@@ -39,11 +40,15 @@ public class GameManager : MonoBehaviour
     [Header("Audio Sources")]
     public TMP_Text volumeText;
     public AudioSource[] allSources;
+    public Slider volumeSlider;
 
     void Start()
     {
-        if (PlayerPrefs.HasKey("InvertAim"))
+        if (PlayerPrefs.HasKey("InvertAim") && invertAimToggle)
             SetAimToggle();
+
+        if (PlayerPrefs.HasKey("Particles") && particlesToggle)
+            GetParticles();
 
         if (PlayerPrefs.HasKey("Volume") && allSources.Length > 0 && volumeText)
             GetVolume();
@@ -105,6 +110,8 @@ public class GameManager : MonoBehaviour
 
         if (PlayerManager.Instance)
             PlayerManager.Instance.SetInvertAim(toggle);
+
+        SetAimToggle();
     }
 
     public void GetVolume()
@@ -115,6 +122,7 @@ public class GameManager : MonoBehaviour
         }
 
         volumeText.text = $"Volume: {PlayerPrefs.GetFloat("Volume"):0.00}";
+        volumeSlider.value = PlayerPrefs.GetFloat("Volume");
     }
 
     public void SetVolume(Slider s)
@@ -126,6 +134,16 @@ public class GameManager : MonoBehaviour
         
         volumeText.text = $"Volume: {s.value:0.00}";
         PlayerPrefs.SetFloat("Volume", s.value);
+    }
+
+    public void SetParticles(Toggle t)
+    {
+        PlayerPrefs.SetInt("Partices", t.isOn ? 1 : 0);
+    }
+
+    public void GetParticles()
+    {
+        particlesToggle.isOn = PlayerPrefs.GetInt("Particles") == 1;
     }
 
     public void QuitGame(int exitCode)
