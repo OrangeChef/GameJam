@@ -149,9 +149,9 @@ public class GameManager : MonoBehaviour
         volumeSlider.value = volume;
     }
 
-    public void ClearPlayerPrefs(bool excludeInvertAim)
+    public void ClearPlayerPrefs(bool excludeSettings)
     {
-        if (excludeInvertAim)
+        if (excludeSettings)
         {
             PlayerManager.Instance.SavePosition(true);
             PlayerManager.Instance.SaveVelocity(true);

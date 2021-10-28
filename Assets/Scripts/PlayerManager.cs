@@ -104,7 +104,7 @@ public class PlayerManager : MonoBehaviour
     public void SavePosition(bool startPos)
     {
         PlayerPrefs.SetFloat("XPos", startPos ? startPosition.position.x : body.position.x);
-        PlayerPrefs.SetFloat("YPos", startPos ? startPosition.position.y : body.position.y);
+        PlayerPrefs.SetFloat("YPos", startPos ? startPosition.position.y : body.position.y + 0.25f);
     }
 
     public void LoadPosition()
