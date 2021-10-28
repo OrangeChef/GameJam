@@ -1,5 +1,8 @@
 # GameJam
-$2,000 prize, hope I win. Good luck to all jammers!
 
-This project is a video game currently under active development for the Ludwig Jam, which ends on 10/26/2021 at 18:00 EST.
-It is not yet ready to be played by the public, as it is in very early development. Even as early as prototyping.
+Text script:
+"BOING!" is a short Foddian-style game developed by OrangeChef for the Ludwig Jam in just under 3 days.
+In it, your task is to bounce up to the summit of an ice mountain with a spring, facing opposite of the mouse at all times.
+Without friction, you'll slip and slide easily, so always be sure to have a backup strategy in-case something goes wrong.
+Oh, and watch out for water, you'll freeze to death and restart!
+Well, good luck!
