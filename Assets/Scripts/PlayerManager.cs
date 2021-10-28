@@ -27,10 +27,6 @@ public class PlayerManager : MonoBehaviour
     #endregion
 
     public bool invertAim = false;
-    public Toggle invertToggle;
-
-    [Header("Particles")]
-    public Toggle particlesToggle;
 
     [Header("Start")]
     public Transform startPosition;
@@ -45,7 +41,6 @@ public class PlayerManager : MonoBehaviour
     public float saveInterval = 1f;
 
     private Rigidbody2D body;
-    private ParticleSystem[] particles;
     private Vector2 directionToMouse;
     private Camera mainCam;
 
@@ -53,11 +48,6 @@ public class PlayerManager : MonoBehaviour
     {
         mainCam = Camera.main;
         TryGetComponent(out body);
-
-        if (invertToggle)
-            GetInvertAim();
-
-        particles = FindObjectsOfType<ParticleSystem>();
 
         if (PlayerPrefs.HasKey("XPos") && PlayerPrefs.HasKey("YPos"))
             LoadPosition();
@@ -75,15 +65,14 @@ public class PlayerManager : MonoBehaviour
             LoadVelocity();
         }
 
-        if (PlayerPrefs.HasKey("Particles"))
-            GetParticles();
-
         StartCoroutine(SavePlayer());
         Initialize();
     }
 
     void Initialize()
     {
+        invertAim = PlayerPrefs.HasKey("Invert") ? PlayerPrefs.GetInt("Invert") == 1 : transform;
+
         transform.localScale = Vector3.zero;
         GameTimer.Instance.SetTimerActivity(false);
         body.constraints = RigidbodyConstraints2D.FreezeAll;
@@ -106,27 +95,10 @@ public class PlayerManager : MonoBehaviour
         return angle;
     }
 
-    public void SetInvertAim(Toggle toggle)
+    public void ActivateStuff()
     {
-        invertAim = toggle.isOn;
-    }
-
-    public void GetInvertAim()
-    {
-        invertToggle.isOn = PlayerPrefs.GetInt("InvertAim") == 1;
-
-        if (PlayerPrefs.HasKey("InvertAim"))
-            invertAim = PlayerPrefs.GetInt("InvertAim") == 1;
-    }
-
-    public bool ReturnInvertAim()
-    {
-        bool inverted = false;
-
-        if (PlayerPrefs.HasKey("InvertAim"))
-            invertAim = PlayerPrefs.GetInt("InvertAim") == 1;
-
-        return inverted;
+        body.constraints = RigidbodyConstraints2D.None;
+        GameTimer.Instance.SetTimerActivity(true);
     }
 
     public void SavePosition(bool startPos)
@@ -135,10 +107,20 @@ public class PlayerManager : MonoBehaviour
         PlayerPrefs.SetFloat("YPos", startPos ? startPosition.position.y : body.position.y);
     }
 
+    public void LoadPosition()
+    {
+        body.position = new Vector2(PlayerPrefs.GetFloat("XPos"), PlayerPrefs.GetFloat("YPos"));
+    }
+
     public void SaveVelocity(bool startPos)
     {
         PlayerPrefs.SetFloat("XVel", startPos ? 0f : body.velocity.x);
         PlayerPrefs.SetFloat("YVel", startPos ? 0f : body.velocity.y);
+    }
+
+    public void LoadVelocity()
+    {
+        body.velocity = new Vector2(PlayerPrefs.GetFloat("XVel"), PlayerPrefs.GetFloat("YVel"));
     }
 
     public void SaveTime(bool startPos)
@@ -149,26 +131,21 @@ public class PlayerManager : MonoBehaviour
         PlayerPrefs.SetFloat("Time", GameTimer.Instance.currentTime);
     }
 
-    public void LoadPosition()
-    {
-        body.position = new Vector2(PlayerPrefs.GetFloat("XPos"), PlayerPrefs.GetFloat("YPos"));
-    }
-
-    public void LoadVelocity()
-    {
-        body.velocity = new Vector2(PlayerPrefs.GetFloat("XVel"), PlayerPrefs.GetFloat("YVel"));
-    }
-
-    public void ActivateStuff()
-    {
-        body.constraints = RigidbodyConstraints2D.None;
-        GameTimer.Instance.SetTimerActivity(true);
-    }
-
     public void LoadTime()
     {
         if (PlayerPrefs.HasKey("Time"))
             GameTimer.Instance.currentTime = PlayerPrefs.GetFloat("Time");
+    }
+
+    public void SaveInvert(Toggle t)
+    {
+        PlayerPrefs.SetInt("Invert", t.isOn ? 1 : 0);
+        LoadInvert();
+    }
+
+    public void LoadInvert()
+    {
+        invertAim = PlayerPrefs.GetInt("Invert") == 1;
     }
 
     public void SaveAll(bool startPos)
@@ -178,20 +155,11 @@ public class PlayerManager : MonoBehaviour
         SaveTime(startPos);
     }
 
-    public void GetParticles()
+    public void LoadAll()
     {
-        for (int i = 0; i < particles.Length; i++)
-        {
-            particles[i].gameObject.SetActive(PlayerPrefs.GetInt("Particles") == 1);
-        }
-
-        particlesToggle.isOn = PlayerPrefs.GetInt("Particles") == 1;
-    }
-
-    public void SetParticles(Toggle t)
-    {
-        PlayerPrefs.SetInt("Particles", t.isOn ? 1 : 0);
-        GetParticles();
+        LoadPosition();
+        LoadVelocity();
+        LoadTime();
     }
 
     public IEnumerator SavePlayer()

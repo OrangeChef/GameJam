@@ -30,7 +30,7 @@ public class Water : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
-        GameManager.Instance.ClearPlayerPrefs();
+        GameManager.Instance.ClearPlayerPrefs(true);
         GameManager.Instance.LoadScene(sceneName);
     }
 }

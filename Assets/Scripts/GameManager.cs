@@ -25,8 +25,18 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
-    public Toggle invertAimToggle;
+    [Header("Settings")]
+    public bool invertAim;
+    public float volume = 1f;
+    public TMP_Text volumeText;
+
+    [Space]
+    public Toggle invertToggle;
     public Toggle particlesToggle;
+    public Slider volumeSlider;
+
+    [Space]
+    public bool useParticles = true;
 
     [Header("Pausing")]
     public string pauseKey = "Pause";
@@ -37,23 +47,14 @@ public class GameManager : MonoBehaviour
     public string restartButton = "Restart";
     public Menu restartMenu;
 
-    [Header("Audio Sources")]
-    public TMP_Text volumeText;
-    public AudioSource[] allSources;
-    public Slider volumeSlider;
+    private ParticleSystem[] allParticles;
+    private AudioSource[] allSources;
 
     void Start()
     {
-        if (PlayerPrefs.HasKey("InvertAim") && invertAimToggle)
-            SetAimToggle();
-
-        if (PlayerPrefs.HasKey("Particles") && particlesToggle)
-            GetParticles();
-
-        if (PlayerPrefs.HasKey("Volume") && allSources.Length > 0 && volumeText)
-            GetVolume();
-
+        allParticles = FindObjectsOfType<ParticleSystem>();
         allSources = FindObjectsOfType<AudioSource>();
+        InitializeSettings();
     }
 
     void Update()
@@ -65,9 +66,84 @@ public class GameManager : MonoBehaviour
             MenuManager.Instance.OpenMenu(restartMenu);
     }
 
-    public void ClearPlayerPrefs()
+    void InitializeSettings()
     {
-        PlayerPrefs.DeleteAll();
+        if (PlayerPrefs.HasKey("Invert"))
+            LoadInvert();
+
+        if (PlayerPrefs.HasKey("Particles"))
+            LoadParticles();
+
+        if (PlayerPrefs.HasKey("Volume"))
+            LoadVolume();
+    }
+
+    public void SaveInvert()
+    {
+        PlayerPrefs.SetInt("Invert", invertToggle.isOn ? 1 : 0);
+
+        if (PlayerManager.Instance)
+            PlayerManager.Instance.SaveInvert(invertToggle);
+
+        LoadInvert();
+    }
+
+    public void LoadInvert()
+    {
+        invertAim = PlayerPrefs.GetInt("Invert") == 1;
+        invertToggle.isOn = invertAim;
+
+        if (PlayerManager.Instance)
+            PlayerManager.Instance.LoadInvert();
+    }
+
+    public void SaveParticles()
+    {
+        PlayerPrefs.SetInt("Particles", particlesToggle.isOn ? 1 : 0);
+        LoadParticles();
+    }
+
+    public void LoadParticles()
+    {
+        useParticles = PlayerPrefs.GetInt("Particles") == 1;
+
+        for (int i = 0; i < allParticles.Length; i++)
+        {
+            allParticles[i].gameObject.SetActive(useParticles);
+        }
+
+        particlesToggle.isOn = useParticles;
+    }
+
+    public void SaveVolume()
+    {
+        PlayerPrefs.SetFloat("Volume", volumeSlider.value);
+        LoadVolume();
+    }
+
+    public void LoadVolume()
+    {
+        volume = PlayerPrefs.GetFloat("Volume");
+
+        for (int i = 0; i < allSources.Length; i++)
+        {
+            allSources[i].volume = volume;
+        }
+
+        volumeText.text = $"Volume: {volume:0.00}";
+        volumeSlider.value = volume;
+    }
+
+    public void ClearPlayerPrefs(bool excludeInvertAim)
+    {
+        if (excludeInvertAim)
+        {
+            PlayerManager.Instance.SavePosition(true);
+            PlayerManager.Instance.SaveVelocity(true);
+            PlayerManager.Instance.SaveTime(true);
+        }    
+        else
+            PlayerPrefs.DeleteAll();
     }
 
     public void PauseGame()
@@ -80,7 +156,7 @@ public class GameManager : MonoBehaviour
 
     public void Restart()
     {
-        ClearPlayerPrefs();
+        ClearPlayerPrefs(true);
         LoadScene(SceneManager.GetActiveScene().name);
     }
 
@@ -89,7 +165,7 @@ public class GameManager : MonoBehaviour
         if (sceneName == "TitleMenu" && PlayerManager.Instance)
             PlayerManager.Instance.SaveAll(false);
         else if (sceneName == gameSceneName && SceneManager.GetActiveScene().name == "FinishMenu")
-            ClearPlayerPrefs();
+            ClearPlayerPrefs(true);
 
         SceneManager.LoadScene(sceneName);
     }
@@ -97,53 +173,6 @@ public class GameManager : MonoBehaviour
     public void UnloadScene(string sceneName)
     {
         SceneManager.UnloadSceneAsync(sceneName);
-    }
-
-    public void SetAimToggle()
-    {
-        invertAimToggle.isOn = PlayerPrefs.GetInt("InvertAim") == 1;
-    }
-
-    public void SetInvertAim(Toggle toggle)
-    {
-        PlayerPrefs.SetInt("InvertAim", toggle.isOn ? 1 : 0);
-
-        if (PlayerManager.Instance)
-            PlayerManager.Instance.SetInvertAim(toggle);
-
-        SetAimToggle();
-    }
-
-    public void GetVolume()
-    {
-        for (int i = 0; i < allSources.Length; i++)
-        {
-            allSources[i].volume = PlayerPrefs.GetFloat("Volume");
-        }
-
-        volumeText.text = $"Volume: {PlayerPrefs.GetFloat("Volume"):0.00}";
-        volumeSlider.value = PlayerPrefs.GetFloat("Volume");
-    }
-
-    public void SetVolume(Slider s)
-    {
-        for (int i = 0; i < allSources.Length; i++)
-        {
-            allSources[i].volume = s.value;
-        }
-        
-        volumeText.text = $"Volume: {s.value:0.00}";
-        PlayerPrefs.SetFloat("Volume", s.value);
-    }
-
-    public void SetParticles(Toggle t)
-    {
-        PlayerPrefs.SetInt("Partices", t.isOn ? 1 : 0);
-    }
-
-    public void GetParticles()
-    {
-        particlesToggle.isOn = PlayerPrefs.GetInt("Particles") == 1;
     }
 
     public void QuitGame(int exitCode)

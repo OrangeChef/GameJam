@@ -2290,13 +2290,13 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1394118201}
-        m_TargetAssemblyTypeName: PlayerManager, Assembly-CSharp
-        m_MethodName: SetParticles
-        m_Mode: 2
+      - m_Target: {fileID: 273131920}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: SaveParticles
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 66551785}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Toggle, UnityEngine.UI
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -11149,16 +11149,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a93f21f1cb247b44dadad0bf43a89193, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  invertAimToggle: {fileID: 468578011}
-  particlesToggle: {fileID: 0}
+  invertAim: 0
+  volume: 0
+  volumeText: {fileID: 1036466161}
+  invertToggle: {fileID: 468578011}
+  particlesToggle: {fileID: 66551785}
+  volumeSlider: {fileID: 958204305}
+  useParticles: 0
   pauseKey: Pause
   pauseMenu: {fileID: 4145263}
   gameSceneName: Game
   restartButton: Restart
   restartMenu: {fileID: 1768723755}
-  volumeText: {fileID: 1036466161}
-  allSources: []
-  volumeSlider: {fileID: 0}
 --- !u!4 &273131921
 Transform:
   m_ObjectHideFlags: 0
@@ -13672,13 +13674,13 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1394118201}
-        m_TargetAssemblyTypeName: PlayerManager, Assembly-CSharp
-        m_MethodName: SetInvertAim
-        m_Mode: 2
+      - m_Target: {fileID: 273131920}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: SaveInvert
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 468578011}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Toggle, UnityEngine.UI
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -21762,11 +21764,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 273131920}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: SetVolume
-        m_Mode: 2
+        m_MethodName: SaveVolume
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 958204305}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Slider, UnityEngine.UI
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -26948,8 +26950,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   invertAim: 0
-  invertToggle: {fileID: 468578011}
-  particlesToggle: {fileID: 66551785}
   startPosition: {fileID: 346892398}
   targetScale: {x: 0.75, y: 0.75, z: 1}
   scaleTime: 1
