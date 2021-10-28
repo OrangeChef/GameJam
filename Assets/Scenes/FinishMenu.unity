@@ -830,7 +830,7 @@ RectTransform:
   m_Children:
   - {fileID: 13703766}
   m_Father: {fileID: 1442867926}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1160,8 +1160,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a93f21f1cb247b44dadad0bf43a89193, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  invertAimToggle: {fileID: 0}
-  menuMappings: []
+  invertAim: 0
+  volume: 1
+  volumeText: {fileID: 0}
+  invertToggle: {fileID: 0}
+  particlesToggle: {fileID: 0}
+  volumeSlider: {fileID: 0}
+  useParticles: 1
+  pauseKey: Pause
+  pauseMenu: {fileID: 0}
   gameSceneName: Game
   restartButton: Restart
   restartMenu: {fileID: 0}
@@ -1528,8 +1535,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 876747344}
   - {fileID: 1651415102}
+  - {fileID: 876747344}
   - {fileID: 1492506490}
   m_Father: {fileID: 1201541343}
   m_RootOrder: 3
@@ -1730,7 +1737,7 @@ RectTransform:
   m_Children:
   - {fileID: 1217235058}
   m_Father: {fileID: 1442867926}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}

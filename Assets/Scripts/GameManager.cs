@@ -106,7 +106,9 @@ public class GameManager : MonoBehaviour
     public void LoadInvert()
     {
         invertAim = PlayerPrefs.GetInt("Invert") == 1;
-        invertToggle.isOn = invertAim;
+
+        if (invertToggle)
+            invertToggle.isOn = invertAim;
 
         if (PlayerManager.Instance)
             PlayerManager.Instance.LoadInvert();
@@ -127,7 +129,8 @@ public class GameManager : MonoBehaviour
             allParticles[i].gameObject.SetActive(useParticles);
         }
 
-        particlesToggle.isOn = useParticles;
+        if (particlesToggle)
+            particlesToggle.isOn = useParticles;
     }
 
     public void SaveVolume()
@@ -145,17 +148,22 @@ public class GameManager : MonoBehaviour
             allSources[i].volume = volume;
         }
 
-        volumeText.text = $"Volume: {volume:0.00}";
-        volumeSlider.value = volume;
+        if (volumeText && volumeSlider)
+        {
+            volumeText.text = $"Volume: {volume:0.00}";
+            volumeSlider.value = volume;
+        }
     }
 
     public void ClearPlayerPrefs(bool excludeSettings)
     {
         if (excludeSettings)
         {
-            PlayerManager.Instance.SavePosition(true);
-            PlayerManager.Instance.SaveVelocity(true);
-            PlayerManager.Instance.SaveTime(true);
+            PlayerPrefs.DeleteKey("XPos");
+            PlayerPrefs.DeleteKey("YPos");
+            PlayerPrefs.DeleteKey("XVel");
+            PlayerPrefs.DeleteKey("YVel");
+            PlayerPrefs.DeleteKey("Time");;
         }    
         else
             PlayerPrefs.DeleteAll();
@@ -177,10 +185,10 @@ public class GameManager : MonoBehaviour
 
     public void LoadScene(string sceneName)
     {
-        if (sceneName == "TitleMenu" && PlayerManager.Instance)
-            PlayerManager.Instance.SaveAll(false);
-        else if (sceneName == gameSceneName && SceneManager.GetActiveScene().name == "FinishMenu")
+        if (SceneManager.GetActiveScene().name == "FinishMenu" && sceneName == gameSceneName)
             ClearPlayerPrefs(true);
+        else if (sceneName == "TitleMenu" && PlayerManager.Instance)
+            PlayerManager.Instance.SaveAll(false);
 
         SceneManager.LoadScene(sceneName);
     }
