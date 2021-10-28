@@ -26,10 +26,11 @@ public class GameManager : MonoBehaviour
 
     public Toggle invertAimToggle;
 
-    [Header("Toggle menu on Key Press")]
-    public ToggleMenuOnKeyPress[] menuMappings;
+    [Header("Pausing")]
+    public string pauseKey = "Pause";
+    public Menu pauseMenu;
 
-    [Space]
+    [Header("Restarting")]
     public string gameSceneName = "Game";
     public string restartButton = "Restart";
     public Menu restartMenu;
@@ -42,19 +43,8 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (menuMappings.Length > 0)
-        {
-            foreach (ToggleMenuOnKeyPress tmokp in menuMappings)
-            {
-                if (Input.GetKeyDown(tmokp.key))
-                {
-                    if (tmokp.menu.isMenuOpen)
-                        MenuManager.Instance.CloseMenu(tmokp.menu);
-                    else
-                        MenuManager.Instance.OpenMenu(tmokp.menu);
-                }
-            }
-        }
+        if (Input.GetButtonDown(pauseKey))
+            PauseGame();
 
         if (Input.GetButtonDown(restartButton) && SceneManager.GetActiveScene().name == gameSceneName)
             MenuManager.Instance.OpenMenu(restartMenu);
@@ -63,6 +53,14 @@ public class GameManager : MonoBehaviour
     public void ClearPlayerPrefs()
     {
         PlayerPrefs.DeleteAll();
+    }
+
+    public void PauseGame()
+    {
+        if (pauseMenu.isMenuOpen)
+            MenuManager.Instance.CloseMenu(pauseMenu);
+        else
+            MenuManager.Instance.OpenMenu(pauseMenu);
     }
 
     public void Restart()
@@ -113,11 +111,4 @@ public class GameManager : MonoBehaviour
 #endif
         Application.Quit(exitCode);
     }
-}
-
-[System.Serializable]
-public class ToggleMenuOnKeyPress
-{
-    public Menu menu;
-    public KeyCode key;
 }
