@@ -128,7 +128,7 @@ public class PlayerManager : MonoBehaviour
         if (startPos)
             GameTimer.Instance.currentTime = 0f;
 
-        PlayerPrefs.SetFloat("Time", GameTimer.Instance.currentTime);
+        PlayerPrefs.SetFloat("Time", (float)GameTimer.Instance.currentTime);
     }
 
     public void LoadTime()

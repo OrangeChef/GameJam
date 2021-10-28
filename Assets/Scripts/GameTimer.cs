@@ -21,7 +21,7 @@ public class GameTimer : MonoBehaviour
     }
     #endregion
 
-    public float currentTime;
+    public double currentTime;
 
     private TMP_Text currentTimer;
     private bool timerActive = true;
@@ -33,7 +33,7 @@ public class GameTimer : MonoBehaviour
         if (PlayerPrefs.HasKey("Time"))
             currentTime = PlayerPrefs.GetFloat("Time");
         else
-            PlayerPrefs.SetFloat("Time", 9999f);
+            PlayerPrefs.SetFloat("Time", 0f);
 
         currentTimer.text = GetTime();
         timerActive = true;
@@ -50,15 +50,11 @@ public class GameTimer : MonoBehaviour
 
     string GetTime()
     {
-        float hours = Mathf.FloorToInt(currentTime / 3600f);
-        float minutes = Mathf.FloorToInt(currentTime / 60f);
-        float seconds = Mathf.FloorToInt(currentTime % 60f);
-        float centiseconds = currentTime % 1f * 100f;
+        float minutes = Mathf.FloorToInt((float)(currentTime / 60d));
+        float seconds = Mathf.FloorToInt((float)(currentTime % 60d));
+        float milliseconds = (float)(currentTime % 1d * 1000d);
 
-        if (minutes == 60)
-            minutes = 0;
-
-        return string.Format("{0:00}:{1:00}:{2:00}.{3:00}", hours, minutes, seconds, centiseconds);
+        return string.Format("{0:00}:{1:00}.{2:000}", minutes, seconds, milliseconds);
     }
 
     public void SetTimerActivity(bool active)

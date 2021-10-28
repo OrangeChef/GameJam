@@ -22,7 +22,7 @@ public class GameFinish : MonoBehaviour
             PlayerManager.Instance.enabled = false;
 
             GameTimer.Instance.SetTimerActivity(false);
-            PlayerPrefs.SetFloat("Time", GameTimer.Instance.currentTime);
+            PlayerPrefs.SetFloat("Time", (float)GameTimer.Instance.currentTime);
 
             player.LeanMove(transform.position, movePlayerSpeed).setEase(easeType).setOnComplete(() => StartCoroutine(WaitAndLoad()));
         }
