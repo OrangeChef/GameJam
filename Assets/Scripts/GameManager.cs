@@ -70,12 +70,27 @@ public class GameManager : MonoBehaviour
     {
         if (PlayerPrefs.HasKey("Invert"))
             LoadInvert();
+        else
+        {
+            invertToggle.isOn = false;
+            SaveInvert();
+        }
 
         if (PlayerPrefs.HasKey("Particles"))
             LoadParticles();
+        else
+        {
+            particlesToggle.isOn = true;
+            SaveParticles();
+        }
 
         if (PlayerPrefs.HasKey("Volume"))
             LoadVolume();
+        else
+        {
+            volumeSlider.value = 0.5f;
+            SaveVolume();
+        }
     }
 
     public void SaveInvert()
